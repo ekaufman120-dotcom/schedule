@@ -21,8 +21,17 @@ public class AppointmentScheduler {
      * just the adjacent appointments. Return true only if added.
      */
     public boolean book(Appointment requested) {
-        // TODO: Check hours, previous neighbor, next neighbor; add if valid.
-        return false;
+        if(requested.getStartMinutes()<480||requested.getStartMinutes()+requested.getDurationMinutes()>1020){
+            System.out.println(requested.getStartMinutes()<480);
+            System.out.println(requested.getStartMinutes()+requested.getDurationMinutes()>1020);
+            return false;
+        }
+        Appointment before = schedule.floor(Appointment.keyAt(requested.getStartMinutes()));
+        Appointment after = schedule.ceiling(Appointment.keyAt(requested.getStartMinutes()));
+        if((before!=null&&before.getStartMinutes()+before.getDurationMinutes()>requested.getStartMinutes())||(after!=null&&requested.getStartMinutes()+requested.getDurationMinutes()>after.getStartMinutes()))
+            return false;
+        schedule.add(requested);
+        return true;
     }
 
     /** 2: Print appointments chronologically, or an empty-schedule message. */
