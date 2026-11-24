@@ -22,8 +22,6 @@ public class AppointmentScheduler {
      */
     public boolean book(Appointment requested) {
         if(requested.getStartMinutes()<480||requested.getStartMinutes()+requested.getDurationMinutes()>1020){
-            System.out.println(requested.getStartMinutes()<480);
-            System.out.println(requested.getStartMinutes()+requested.getDurationMinutes()>1020);
             return false;
         }
         Appointment before = schedule.floor(Appointment.keyAt(requested.getStartMinutes()));
@@ -37,6 +35,8 @@ public class AppointmentScheduler {
     /** 2: Print appointments chronologically, or an empty-schedule message. */
     public void printSchedule() {
         // Use the TreeSet's sorted iteration order.
+        if(schedule.isEmpty())
+            System.out.println("Schedule is empty.");
         for(Appointment i: schedule)
         {
             System.out.println(i);
@@ -61,10 +61,10 @@ public class AppointmentScheduler {
     public Appointment nextAtOrAfter(int minutes) {
         // TreeSet.ceiling(Appointment.keyAt(minutes)) is useful.
         //return Math.min(schedule.floor(Appointment.keyAt(minutes)),schedule.ceiling(Appointment.keyAt(minutes)));
-        if(Math.abs(minutes-schedule.floor(Appointment.keyAt(minutes)).getStartMinutes())<Math.abs(minutes-schedule.ceiling(Appointment.keyAt(minutes)).getStartMinutes()))
+        /* if(Math.abs(minutes-schedule.floor(Appointment.keyAt(minutes)).getStartMinutes())<Math.abs(minutes-schedule.ceiling(Appointment.keyAt(minutes)).getStartMinutes()))
             return schedule.floor(Appointment.keyAt(minutes));
-        else
-            return schedule.ceiling(Appointment.keyAt(minutes));
+        else */
+        return schedule.ceiling(Appointment.keyAt(minutes));
     }
 
     /**
